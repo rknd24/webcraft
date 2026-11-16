@@ -22,3 +22,9 @@ WebCraft：Web技術（HTTP・DB・認証など）の基礎を固めるための
 - ドキュメントだけの変更（`docs/` 配下・README.md・CLAUDE.md）は、mainに直接pushしてよい
 - 1週間ごとのスプリントで進める。各スプリントの最後に `docs/retro.md` に1行振り返りを残す
 - 大きな設計判断をしたら `docs/adr/` に記録する
+
+## AIがしてよいこと・いけないこと
+- してよい：featureブランチのpushと、PRの作成（`/pr`）
+- いけない：PRのマージ、mainへのpush、force push（必ず守らせるため、`.claude/hooks/guard-git.py` でも止めている）
+- PRの本文：理由を1〜2行と、確認してほしい点を1〜2個。署名の行は付けない
+- マージの前に、作者が差分（Files changed）を読む
