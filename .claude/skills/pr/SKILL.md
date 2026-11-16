@@ -2,7 +2,7 @@
 name: pr
 description: 現在のfeatureブランチをpushして、PRを作る（マージはしない）
 disable-model-invocation: true
-argument-hint: [PRタイトル（省略可）]
+argument-hint: "[PRタイトル（省略可）]"
 allowed-tools: Bash(git push -u origin *) Bash(gh pr create *) Bash(git branch *) Bash(git status *) Bash(git log *) Bash(git diff *)
 ---
 
