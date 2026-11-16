@@ -19,7 +19,7 @@ WebCraft：Web技術（HTTP・DB・認証など）の基礎を固めるための
 
 ## 開発の進め方
 - コードの変更は、ブランチを切って作業し、PRを出してからマージする（main直接pushしない）
-- ドキュメントだけの変更（`docs/` 配下・README.md・CLAUDE.md）は、mainに直接pushしてよい
+- ドキュメントだけの変更（`docs/` 配下・README.md・CLAUDE.md）は、mainに直接pushしてよい（作者が手で行う。AIは行わない）
 - 1週間ごとのスプリントで進める。各スプリントの最後に `docs/retro.md` に1行振り返りを残す
 - 大きな設計判断をしたら `docs/adr/` に記録する
 

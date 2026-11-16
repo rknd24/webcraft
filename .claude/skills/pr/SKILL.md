@@ -15,7 +15,7 @@ allowed-tools: Bash(git push -u origin *) Bash(gh pr create *) Bash(git branch *
 2. `git status --short` で、未コミットの変更を確認する。あれば、止まって、報告する（勝手にコミットしない）。
 3. `git log --oneline main..HEAD` と `git diff --stat main...HEAD` で、変更の内容を把握する。
 4. PRのタイトルと本文を作る（下の雛形）。
-5. `git push -u origin <ブランチ名>` を実行する。
+5. `git push -u origin <ブランチ名>` を実行する（認証は、`.claude/settings.json` の `env`（`GIT_CONFIG_*`）で、`gh` に任せている）。
 6. `gh pr create --base main --title "<タイトル>" --body "<本文>"` を実行する。
 7. PRのURLを表示して、終わる。マージは、しない。
 
