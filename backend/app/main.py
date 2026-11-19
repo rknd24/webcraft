@@ -1,12 +1,16 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from sqlalchemy import select
-from app.models import Question, Option
+from app.models import Category, Question, Option
 from sqlalchemy.orm import Session
 from app.database import get_db
 
 
 app = FastAPI()
+
+class CategoryOut(BaseModel):
+    category_id: int
+    category_name: str
 
 class OptionOut(BaseModel):
     option_id: int
@@ -16,6 +20,14 @@ class QuestionOut(BaseModel):
     que_id: int
     que_statement: str
     options: list[OptionOut]
+
+
+@app.get("/categories",response_model=list[CategoryOut])
+def get_categories(db: Session=Depends(get_db)):
+    categories = db.scalars(select(Category)).all()
+    if not categories:
+        raise HTTPException(status_code=500, detail="カテゴリが登録されていません")
+    return [{"category_id": category.category_id, "category_name": category.category_name} for category in categories]
 
 
 @app.get("/questions/{que_id}", response_model=QuestionOut)
