@@ -1,35 +1,12 @@
 from fastapi import FastAPI, HTTPException, Depends
-from pydantic import BaseModel
 from sqlalchemy import select, func
 from app.models import Category, Question, Option
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.rules import validate_choices
-
+from app.schemas import CategoryOut, QuestionOut, AnswerIn, AnswerOut
 
 app = FastAPI()
-
-class CategoryOut(BaseModel):
-    category_id: int
-    category_name: str
-
-class OptionOut(BaseModel):
-    option_id: int
-    option_text: str
-
-class QuestionOut(BaseModel):
-    que_id: int
-    que_statement: str
-    options: list[OptionOut]
-
-class AnswerIn(BaseModel):
-    option_id: int
-
-class AnswerOut(BaseModel):
-    is_correct: bool
-    correct_option_id: int
-    que_explanation: str
-
 
 def load_question_with_options(db, que_id):
     q = db.scalars(select(Question).where(Question.que_id == que_id, Question.is_deleted == False)).first()
