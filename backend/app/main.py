@@ -22,6 +22,15 @@ class QuestionOut(BaseModel):
     que_statement: str
     options: list[OptionOut]
 
+class AnswerIn(BaseModel):
+    option_id: int
+
+class AnswerOut(BaseModel):
+    is_correct: bool
+    correct_option_id: int
+    que_explanation: str
+
+
 def load_question_with_options(db, que_id):
     q = db.scalars(select(Question).where(Question.que_id == que_id, Question.is_deleted == False)).first()
     if q is None:
@@ -60,7 +69,7 @@ def get_random_question(category_id: int, db: Session= Depends(get_db)):
 
 
 @app.get("/questions/{que_id}", response_model=QuestionOut)
-def get_question(que_id: int, db: Session = Depends(get_db)):
+def get_question(que_id: int, db: Session= Depends(get_db)):
     try:
         result = load_question_with_options(db, que_id)
     except ValueError:
@@ -73,6 +82,30 @@ def get_question(que_id: int, db: Session = Depends(get_db)):
         "que_statement": q.que_statement,
         "options": [{"option_id": option.option_id, "option_text": option.option_text} for option in options ]
     }
+
+
+@app.post("/questions/{que_id}/answers", response_model=AnswerOut)
+def post_answer(que_id: int, body: AnswerIn, db: Session= Depends(get_db)):
+    try:
+        result = load_question_with_options(db, que_id)
+    except ValueError:
+        raise HTTPException(status_code=500, detail="データの不備")
+    if result is None:
+        raise HTTPException(status_code=404, detail="問題が見つかりません")
+    q, options = result
+    option_id_list = [option.option_id for option in options]
+    if body.option_id not in option_id_list:
+        raise HTTPException(status_code=422, detail="選択が不正です")
+    correct = [option for option in options if option.is_correct][0]
+    return {
+        "is_correct": body.option_id == correct.option_id,
+        "correct_option_id": correct.option_id,
+        "que_explanation": q.que_explanation
+    }
+        
+    
+    
+
 
 
 
